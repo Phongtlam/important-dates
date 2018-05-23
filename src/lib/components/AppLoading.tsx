@@ -5,7 +5,7 @@ import {
 	Modal,
 	ActivityIndicator
 } from 'react-native';
-import { connect } from 'react-redux';
+import { connect, Dispatch } from 'react-redux';
 import { ActionCreators } from '../../actions';
 import { bindActionCreators } from 'redux';
 import { Colors } from '../../styles/colors';
@@ -30,7 +30,7 @@ interface AppLoadingProps {
 }
 
 class AppLoading extends React.PureComponent<AppLoadingProps> {
-	isUnmounted;
+	isUnmounted = false;
 	timeoutMethod = debounce(() => {
 		if (!this.isUnmounted && this.props.isLoadingScreen) {
 			this.props.actions.toggleLoading(false);
@@ -61,7 +61,7 @@ class AppLoading extends React.PureComponent<AppLoadingProps> {
 						<ActivityIndicator
 							animating={this.props.isLoadingScreen}
 							size='large'
-							color={Colors.mainColor}
+							color={Colors.primary}
 						/>
 					</View>
 				</View>
@@ -76,7 +76,7 @@ const mapStateToProps = (state) => {
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch: Dispatch) => {
 	return {
 		actions: bindActionCreators(ActionCreators, dispatch)
 	};

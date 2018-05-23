@@ -1,11 +1,11 @@
 import { createSwitchNavigator } from 'react-navigation';
-// import AppNavigation from './AppNavigation';
-import AuthScreen from '../containers/AuthScreen';
+import AppNavigation from './AppNavigation';
+import AuthNavigation from './AuthNavigation';
 
 export default createSwitchNavigator(
 	{
-		// AppNavigation: AppNavigation,
-		AuthNavigation: AuthScreen,
+		AppNavigation: AppNavigation,
+		AuthNavigation: AuthNavigation,
 	},
 	{
 		initialRouteName: 'AuthNavigation',

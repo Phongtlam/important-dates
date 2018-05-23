@@ -9,7 +9,6 @@ const styles = StyleSheet.create({
 	appText: {
 		fontFamily: Font.type.base,
 		fontSize: Font.size.medium,
-		color: '#fff'
 	},
 });
 
@@ -19,16 +18,10 @@ interface AppTextProps {
 	onPress?(): void;
 }
 
-const AppText = ({ style, children, ...props }: AppTextProps = { style: {}, children: '' } ) => {
-	let newStyle;
-	if (Array.isArray(style)) {
-		newStyle = [styles.appText, ...style];
-	} else {
-		newStyle = [styles.appText, style];
-	}
-
+const AppText = ({ style, children = '', ...props }: AppTextProps ) => {
+	const textStyle = style ? [styles.appText, style] : styles.appText;
 	return (
-		<Text {...props} style={newStyle}>
+		<Text {...props} style={textStyle}>
 			{children}
 		</Text>
 	);

@@ -1,12 +1,8 @@
 import * as React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
-import { Colors } from '../../styles/Colors';
+import { Colors } from '../../styles/colors';
 
 const styles = StyleSheet.create({
-	container: {
-		backgroundColor: Colors.snow,
-		flex: 1,
-	},
 	image: {
 		position: 'absolute',
 		top: 0,
@@ -16,8 +12,13 @@ const styles = StyleSheet.create({
 	}
 });
 
-const AppBackgroundWrapper = (WrappedComponent: typeof React.Component, backGroundImage?) => props => (
-	<View style={styles.container}>
+const AppBackgroundWrapper = (WrappedComponent: React.ComponentType, backgroundColor: string = Colors.snow, backGroundImage?) => props => (
+	<View
+		style={{
+			flex: 1,
+			backgroundColor
+		}}
+	>
 		{
 			backGroundImage &&
 			<Image source={backGroundImage} style={styles.image} resizeMode='stretch' />

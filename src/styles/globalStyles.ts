@@ -9,3 +9,11 @@ export const modalWrapper = StyleSheet.create({
 		backgroundColor: '#00000040'
 	}
 });
+
+export const loginSignup = StyleSheet.create({
+	textContainer: {
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'center'
+	},
+});

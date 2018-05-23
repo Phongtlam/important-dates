@@ -1,2 +1,2 @@
-// declare module 'react-navigation';
+declare module 'react-navigation';
 declare module '*.png';
