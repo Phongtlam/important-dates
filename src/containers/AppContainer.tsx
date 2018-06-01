@@ -1,6 +1,7 @@
 import * as React from 'react';
 import RootNavigation from '../navigation';
 import { AppAssetsLoader, AppLoading } from '../lib/components';
+import AppModal from '../lib/components/AppModal';
 
 class AppContainer extends React.PureComponent {
 	constructor(props) {
@@ -14,6 +15,7 @@ class AppContainer extends React.PureComponent {
 			<AppAssetsLoader>
 				<RootNavigation />
 				<AppLoading />
+				<AppModal />
 			</AppAssetsLoader>
 		);
 	}

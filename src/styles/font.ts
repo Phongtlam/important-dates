@@ -17,7 +17,7 @@ const size = {
 	tiny: 8.5
 };
 
-export {
+export default {
 	type,
 	size
 };

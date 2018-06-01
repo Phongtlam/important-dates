@@ -1,5 +1,6 @@
 import React from 'react';
 import { AppLoading, Font } from 'expo';
+import { Fonts } from '../../assets';
 
 class AppAssetsLoader extends React.PureComponent {
 	state = {
@@ -8,8 +9,7 @@ class AppAssetsLoader extends React.PureComponent {
 	async componentDidMount() {
 		try {
 			await Font.loadAsync({
-				'Avenir-Black': require('../../assets/fonts/Avenir-Black.ttf'),
-				'Avenir-Book': require('../../assets/fonts/Avenir-Book.ttf'),
+				...Fonts
 			});
 			this.setState({ fontLoaded: true });
 		} catch (error) {

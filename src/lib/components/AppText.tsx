@@ -3,12 +3,14 @@ import {
 	Text,
 	StyleSheet,
 } from 'react-native';
-import * as Font from '../../styles/font';
+import Font from '../../styles/font';
+import Colors from '../../styles/colors';
 
 const styles = StyleSheet.create({
 	appText: {
 		fontFamily: Font.type.base,
-		fontSize: Font.size.medium,
+		fontSize: Font.size.regular,
+		color: Colors.snow
 	},
 });
 

@@ -8,7 +8,7 @@ import {
 import { connect, Dispatch } from 'react-redux';
 import { ActionCreators } from '../../actions';
 import { bindActionCreators } from 'redux';
-import { Colors } from '../../styles/colors';
+import Colors from '../../styles/colors';
 import { modalWrapper } from '../../styles/globalStyles';
 import debounce from 'lodash.debounce';
 
@@ -36,7 +36,7 @@ class AppLoading extends React.PureComponent<AppLoadingProps> {
 			this.props.actions.toggleLoading(false);
 			this.props.actions.toggleAppModal(true, 'Error', 'We are not entirely sure why this is happening. Will you please try again?', true);
 		}
-	}, 10000);
+	}, 15000);
 
 	componentDidUpdate() {
 		if (this.props.isLoadingScreen) {

@@ -1,26 +1,135 @@
 import * as React from 'react';
-import { View, TextInput, TouchableOpacity } from 'react-native';
-import { AppText, AppButton } from '../lib/components';
-import { loginSignup } from '../styles/globalStyles';
+import { View, TouchableOpacity } from 'react-native';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { ActionCreators } from '../actions';
+import { AppText, AppButton, AppBackgroundWrapper, AppInput } from '../lib/components';
+import { UpdateLocalUserObject } from '../actions/user';
+import { UserObject } from '../interfaces';
+import { Auth, Database } from '../lib/firebase';
+import { ToggleAppModal, ToggleLoading } from '../actions/modal';
+import { helpers } from '../lib/utils';
+import Colors from '../styles/colors';
+import { authscreens } from '../styles/globalStyles';
 
 interface LoginProps {
 	navigation: any;
+	userObject: UserObject;
+	actions: {
+		updateLocalUserObject: UpdateLocalUserObject;
+		toggleAppModal: ToggleAppModal;
+		toggleLoading: ToggleLoading;
+	};
 }
 
-class Login extends React.Component<LoginProps> {
+interface LoginState {
+	comparePassword: boolean;
+	inputFields: Array<any>;
+}
+
+class Signup extends React.Component<LoginProps, LoginState> {
+	constructor(props: LoginProps) {
+		super(props);
+		this.state = {
+			comparePassword: false,
+			inputFields: [],
+		};
+	}
+
+	componentDidMount() {
+		this.setState({
+			inputFields: [
+				{
+					label: 'Username',
+					type: 'Hoshi',
+					onChangeText: (input) => { this.props.actions.updateLocalUserObject({ username: input }); }
+				},
+				{
+					label: 'Email address',
+					type: 'Hoshi',
+					onChangeText: (input) => { this.props.actions.updateLocalUserObject({ email: input }); }
+				},
+				{
+					label: 'Password',
+					type: 'Hoshi',
+					onChangeText: (input) => { this.props.actions.updateLocalUserObject({ password: input }); },
+					secureTextEntry: true
+				},
+				{
+					label: 'Confirm your password',
+					type: 'Hoshi',
+					secureTextEntry: true,
+					onChangeText: (input: string) => {
+						this.setState({
+							comparePassword: input === this.props.userObject.password
+						});
+					}
+				},
+			]
+		});
+	}
+
+	_onSignup = async () => {
+		if (!this.state.comparePassword) {
+			this.props.actions.toggleAppModal(true, 'Error', 'Your passwords are not matched');
+			return;
+		}
+		const { userObject, actions, navigation } = this.props;
+		this.props.actions.toggleLoading();
+
+		try {
+			const responseSignup = await Auth.loginSignup('signup', {
+				email: userObject.email,
+				password: userObject.password
+			});
+			actions.updateLocalUserObject({
+				password: '',
+				uid: responseSignup.user.uid
+			});
+			if (userObject.username !== '') {
+				try {
+					await Auth.updateUserProfile(userObject.username);
+					try {
+						await Database.createNewUser({
+							uid: responseSignup.user.uid,
+							username: userObject.username,
+							email: userObject.email,
+							password: ''
+						});
+						navigation.navigate('AppNavigation');
+					} catch (error) {
+						this.props.actions.toggleAppModal(true, 'Error', helpers.errorFormat(error.toString()));
+					}
+				} catch (error) {
+					this.props.actions.toggleAppModal(true, 'Error', helpers.errorFormat(error.toString()));
+				}
+			}
+		} catch (error) {
+			this.props.actions.toggleAppModal(true, 'Error', helpers.errorFormat(error.toString()));
+		}
+		this.props.actions.toggleLoading(true);
+	}
+
 	render() {
 		return (
 			<View>
-				<AppText>New Account</AppText>
-				<TextInput placeholder='Username' />
-				<TextInput placeholder='Password' />
-				<AppButton title='Register' />
-				<View style={loginSignup.textContainer}>
-					<AppText>Already have an account? </AppText>
+				<View style={authscreens.inputGroup}>
+					{
+						this.state.inputFields.map( inputElement => AppInput.build(inputElement))
+					}
+				</View>
+				<AppButton
+					style={authscreens.button}
+					title='Register'
+					onPress={this._onSignup}
+				/>
+				<View style={authscreens.textContainer}>
+					<AppText style={authscreens.text}>Already have an account? </AppText>
 					<TouchableOpacity
+							style={authscreens.text}
 							onPress={() => { this.props.navigation.navigate('LoginScreen'); }}
 					>
-						<AppText>Log in</AppText>
+						<AppText style={authscreens.loginText}>Log in</AppText>
 					</TouchableOpacity>
 				</View>
 			</View>
@@ -28,4 +137,16 @@ class Login extends React.Component<LoginProps> {
 	}
 }
 
-export default Login;
+const mapStateToProps = (state) => {
+	return {
+		...state
+	};
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		actions: bindActionCreators(ActionCreators, dispatch)
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AppBackgroundWrapper(Signup, Colors.purple800));

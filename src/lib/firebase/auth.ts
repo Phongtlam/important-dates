@@ -1,18 +1,12 @@
 import { auth } from './firebase';
 
 export const loginSignup = async (api: 'login' | 'signup', { email = '', password = '' }: { email: string, password: string }) => {
-	let response;
-	try {
-		if (api === 'login') {
-			response = await auth.signInAndRetrieveDataWithEmailAndPassword(email, password);
-		}
-		if (api === 'signup') {
-			response = await auth.createUserWithEmailAndPassword(email, password);
-		}
-	} catch (error) {
-		response = { error: error.toString() };
+	if (api === 'login') {
+		return await auth.signInWithEmailAndPassword(email, password);
 	}
-	return response;
+	if (api === 'signup') {
+		return await auth.createUserWithEmailAndPassword(email, password);
+	}
 };
 
 export const sendPasswordReset = async (email: string) => {
@@ -33,4 +27,13 @@ export const logout = async () => {
 		response = { error: error.toString () };
 	}
 	return response;
+};
+
+export const updateUserProfile = async (username: string) => {
+	if (auth.currentUser) {
+		return await auth.currentUser.updateProfile({
+			displayName: username,
+			photoURL: null
+		});
+	}
 };

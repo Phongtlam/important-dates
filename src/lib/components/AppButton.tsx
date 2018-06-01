@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { Colors } from '../../styles/colors';
-import * as Font from '../../styles/font';
+import Colors from '../../styles/colors';
+import Font from '../../styles/font';
 
 interface ButtonProps {
 	title?: string;
 	onPress?: Function;
 	style?: any;
 	color?: string;
+	textStyle?: any;
 }
 
 const styles = StyleSheet.create({
@@ -17,7 +18,7 @@ const styles = StyleSheet.create({
 	buttonText: {
 		color: Colors.snow,
 		textAlign: 'center',
-		fontSize: Font.size.medium,
+		fontSize: Font.size.regular,
 		fontFamily: Font.type.bold,
 	},
 });
@@ -34,7 +35,7 @@ const AppButton = (props: ButtonProps) => {
 			}}
 			style={[
 				{
-					height: 45,
+					height: 50,
 					borderRadius: 3,
 					backgroundColor: props.color ? props.color : Colors.primary,
 					justifyContent: 'center'
@@ -42,7 +43,7 @@ const AppButton = (props: ButtonProps) => {
 				props.style
 			]}
 		>
-			<Text style={styles.buttonText}>
+			<Text style={[styles.buttonText, props.textStyle ? props.textStyle : {}]}>
 				{props.title}
 			</Text>
 		</TouchableOpacity>

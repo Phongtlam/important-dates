@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { View, TextInput, Button } from 'react-native';
 import AppText from '../lib/components/AppText';
-import AppBackgroundWrapper from '../lib/components/AppBackgroundWrapper';
 import AppButton from '../lib/components/AppButton';
 
 interface AuthScreenProps {
