@@ -15,12 +15,13 @@ const modalInitialState = {
 };
 
 export const modalData = createReducer(modalInitialState, {
-	[types.TOGGLE_APP_MODAL](state, { isOpen, modalType, modalText, stayOpen }) {
+	[types.TOGGLE_APP_MODAL](state, { isOpen, modalType, modalText, stayOpen, functionToResolve }) {
 		return {
 			isOpen,
 			modalType,
 			modalText,
 			stayOpen,
+			functionToResolve
 		};
 	}
 });

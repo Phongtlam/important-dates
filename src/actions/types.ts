@@ -8,3 +8,7 @@ export type TOGGLE_APP_MODAL_TYPE = 'TOGGLE_APP_MODAL';
 // userObject actions
 export const UPDATE_LOCAL_USER_OBJECT = 'UPDATE_LOCAL_USER_OBJECT';
 export type UPDATE_LOCAL_USER_OBJECT_TYPE = 'UPDATE_LOCAL_USER_OBJECT';
+
+// card actions
+export const TOGGLE_CARD = 'TOGGLE_CARD';
+export type TOGGLE_CARD_TYPE = 'TOGGLE_CARD';

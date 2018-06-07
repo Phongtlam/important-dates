@@ -14,4 +14,6 @@ export default {
 	purple700: '#720D5D',
 	purple800: '#5D1049',
 	purple900: '#4E0D3A',
+	grey: '#696969',
+	jade: '#00A86B'
 };

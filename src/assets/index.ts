@@ -1,6 +1,8 @@
 const Images = {
-	welcomeScreen: require('./backgrounds/welcome.png'),
-	calendar: require('./backgrounds/calendar.png')
+	calendar: require('./backgrounds/calendar.png'),
+	anniversary: require('./icons/anniversary.png'),
+	birthdays: require('./icons/birthdays.png'),
+	paycheck: require('./icons/paycheck.png')
 };
 
 const Fonts = {

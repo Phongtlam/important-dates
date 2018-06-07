@@ -43,7 +43,7 @@ const AppButton = (props: ButtonProps) => {
 				props.style
 			]}
 		>
-			<Text style={[styles.buttonText, props.textStyle ? props.textStyle : {}]}>
+			<Text style={[styles.buttonText, props.textStyle]}>
 				{props.title}
 			</Text>
 		</TouchableOpacity>

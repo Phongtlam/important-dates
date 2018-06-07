@@ -25,17 +25,32 @@ const styles = StyleSheet.create({
 		color: '#000',
 		padding: 5,
 	},
+	buttonsContainer: {
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'space-between'
+	},
 	confirmButton: {
 		alignSelf: 'flex-end',
 		paddingRight: 20,
 		paddingBottom: 20,
-		color: Colors.danger
+	},
+	cancelButton: {
+		paddingLeft: 20,
+		paddingBottom: 20,
+		color: Colors.primaryRed
 	}
 });
 
 interface AppModalProps {
-	modalData?: any;
 	actions?: any;
+	modalData: {
+		isOpen?: boolean;
+		stayOpen?: boolean;
+		modalType: string;
+		modalText: string;
+		functionToResolve?: () => void;
+	};
 }
 
 class AppModal extends React.PureComponent<AppModalProps> {
@@ -72,7 +87,7 @@ class AppModal extends React.PureComponent<AppModalProps> {
 							<View style={styles.modalTextWrapper}>
 								<AppText
 									style={{
-										color: modalData.modalType === 'Error' ? Colors.danger : modalData.modalType === 'Info' ? Colors.primary : Colors.success,
+										color: modalData.modalType === 'Error' || 'Warning' ? Colors.danger : modalData.modalType === 'Info' ? Colors.primary : Colors.success,
 										fontFamily: Fonts.type.bold,
 										padding: 5,
 									}}
@@ -83,13 +98,28 @@ class AppModal extends React.PureComponent<AppModalProps> {
 									<AppText style={styles.modalText}>{modalData.modalText}</AppText>
 								</View>
 							</View>
-							<TouchableOpacity
-								onPress={() => {
-									actions.toggleAppModal(false);
-								}}
-							>
-								<AppText style={styles.confirmButton}>OK</AppText>
-							</TouchableOpacity>
+							<View style={modalData.modalType === 'Warning' ? styles.buttonsContainer : {}}>
+								{
+									modalData.modalType === 'Warning' &&
+									<TouchableOpacity
+										onPress={() => {
+											actions.toggleAppModal(false);
+										}}
+									>
+										<AppText style={styles.cancelButton}>Cancel</AppText>
+									</TouchableOpacity>
+								}
+								<TouchableOpacity
+									onPress={() => {
+										if (modalData.functionToResolve) {
+											modalData.functionToResolve();
+										}
+										actions.toggleAppModal(false);
+									}}
+								>
+									<AppText style={[styles.confirmButton, { color: modalData.modalType === 'Warning' ? Colors.primary : Colors.primaryRed }]}>OK</AppText>
+								</TouchableOpacity>
+							</View>
 						</View>
 					</View>
 				</View>

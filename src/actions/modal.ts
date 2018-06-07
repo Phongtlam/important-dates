@@ -21,15 +21,18 @@ export const toggleLoading = (isClose?: boolean) => (dispatch) => {
 	});
 };
 
-export type ToggleAppModal = (isOpen: boolean, modalType: string, modalText: string, stayOpen?: boolean) =>
+export type ToggleAppModal = (isOpen: boolean, modalType: string, modalText: string, stayOpen?: boolean, functionToResolve?: Function) =>
 	TypedAction<types.TOGGLE_APP_MODAL_TYPE, ToggleAppModalPayload>;
 
-export const toggleAppModal = (isOpen: boolean = false, modalType: string = 'Info', modalText: string = '', stayOpen?: boolean) => {
+export const toggleAppModal = (
+	isOpen: boolean = false, modalType: string = 'Info', modalText: string = '', stayOpen?: boolean, functionToResolve?: Function
+) => {
 	return {
 		type: types.TOGGLE_APP_MODAL,
 		isOpen,
 		modalType,
 		modalText,
-		stayOpen
+		stayOpen,
+		functionToResolve
 	};
 };

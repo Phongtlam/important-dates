@@ -24,49 +24,43 @@ interface LoginProps {
 
 interface LoginState {
 	comparePassword: boolean;
-	inputFields: Array<any>;
 }
 
 class Signup extends React.Component<LoginProps, LoginState> {
+	inputFields = [
+		{
+			label: 'Username',
+			type: 'Hoshi',
+			onChangeText: (input) => { this.props.actions.updateLocalUserObject({ username: input }); }
+		},
+		{
+			label: 'Email address *',
+			type: 'Hoshi',
+			onChangeText: (input) => { this.props.actions.updateLocalUserObject({ email: input }); }
+		},
+		{
+			label: 'Password *',
+			type: 'Hoshi',
+			onChangeText: (input) => { this.props.actions.updateLocalUserObject({ password: input }); },
+			secureTextEntry: true
+		},
+		{
+			label: 'Confirm your password *',
+			type: 'Hoshi',
+			secureTextEntry: true,
+			onChangeText: (input: string) => {
+				this.setState({
+					comparePassword: input === this.props.userObject.password
+				});
+			}
+		},
+	];
+
 	constructor(props: LoginProps) {
 		super(props);
 		this.state = {
 			comparePassword: false,
-			inputFields: [],
 		};
-	}
-
-	componentDidMount() {
-		this.setState({
-			inputFields: [
-				{
-					label: 'Username',
-					type: 'Hoshi',
-					onChangeText: (input) => { this.props.actions.updateLocalUserObject({ username: input }); }
-				},
-				{
-					label: 'Email address',
-					type: 'Hoshi',
-					onChangeText: (input) => { this.props.actions.updateLocalUserObject({ email: input }); }
-				},
-				{
-					label: 'Password',
-					type: 'Hoshi',
-					onChangeText: (input) => { this.props.actions.updateLocalUserObject({ password: input }); },
-					secureTextEntry: true
-				},
-				{
-					label: 'Confirm your password',
-					type: 'Hoshi',
-					secureTextEntry: true,
-					onChangeText: (input: string) => {
-						this.setState({
-							comparePassword: input === this.props.userObject.password
-						});
-					}
-				},
-			]
-		});
 	}
 
 	_onSignup = async () => {
@@ -115,7 +109,7 @@ class Signup extends React.Component<LoginProps, LoginState> {
 			<View>
 				<View style={authscreens.inputGroup}>
 					{
-						this.state.inputFields.map( inputElement => AppInput.build(inputElement))
+						this.inputFields.map( inputElement => AppInput.build(inputElement))
 					}
 				</View>
 				<AppButton

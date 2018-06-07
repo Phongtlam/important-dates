@@ -4,6 +4,7 @@ import AppBackgroundWrapper from './AppBackgroundWrapper';
 import AppButton from './AppButton';
 import AppText from './AppText';
 import AppInput from './AppInput';
+import AppButtonBox from './AppButtonBox';
 
 export {
 	AppAssetsLoader,
@@ -11,5 +12,6 @@ export {
 	AppBackgroundWrapper,
 	AppButton,
 	AppText,
-	AppInput
+	AppInput,
+	AppButtonBox
 };

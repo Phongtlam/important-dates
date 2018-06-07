@@ -8,6 +8,6 @@ export default createSwitchNavigator(
 		AuthNavigation: AuthNavigation,
 	},
 	{
-		initialRouteName: 'AuthNavigation',
+		initialRouteName: 'AppNavigation',
 	}
 );

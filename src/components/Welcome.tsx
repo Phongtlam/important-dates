@@ -3,7 +3,6 @@ import { View, StyleSheet } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
-import AppText from '../lib/components/AppText';
 import { AppButton, AppBackgroundWrapper } from '../lib/components';
 import { Images } from '../assets';
 import Colors from '../styles/colors';
@@ -59,7 +58,6 @@ class Welcome extends React.Component<WelcomeProps, WelcomeState> {
 		}
 		try {
 			auth.onAuthStateChanged( user => {
-				console.log('do try');
 				if (user) {
 					this.props.actions.toggleLoading();
 					const { displayName, email, uid } = user;

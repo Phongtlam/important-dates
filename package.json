@@ -54,6 +54,7 @@
     "expo": "^27.0.1",
     "firebase": "^5.0.3",
     "lodash.debounce": "^4.0.8",
+    "moment": "^2.22.2",
     "react": "16.3.1",
     "react-native": "~0.55.2",
     "react-native-calendars": "^1.19.3",

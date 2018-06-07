@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
 import * as modalReducers from './modal';
 import * as userReducers from './user';
+import * as cardReducers from './card';
 
 const appReducer = combineReducers({
 	...modalReducers,
-	...userReducers
+	...userReducers,
+	...cardReducers
 });
 
 export default (state, action) => {

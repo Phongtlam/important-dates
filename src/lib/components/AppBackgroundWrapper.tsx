@@ -38,7 +38,7 @@ const AppBackgroundWrapper = (
 		{
 			overlay &&
 			<View
-				style={[styles.overlay, overlay.styles ? overlay.styles : {}]}
+				style={[styles.overlay, overlay.styles]}
 			/>
 		}
 		{

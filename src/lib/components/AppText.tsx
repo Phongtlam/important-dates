@@ -21,9 +21,8 @@ interface AppTextProps {
 }
 
 const AppText = ({ style, children = '', ...props }: AppTextProps ) => {
-	const textStyle = style ? [styles.appText, style] : styles.appText;
 	return (
-		<Text {...props} style={textStyle}>
+		<Text {...props} style={[styles.appText, style]}>
 			{children}
 		</Text>
 	);

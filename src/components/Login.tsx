@@ -22,34 +22,19 @@ interface LoginProps {
 	};
 }
 
-interface LoginState {
-	inputFields: Array<any>;
-}
-
-class Login extends React.Component<LoginProps, LoginState> {
-	constructor(props: LoginProps) {
-		super(props);
-		this.state = {
-			inputFields: [],
-		};
-	}
-
-	componentDidMount() {
-		this.setState({
-			inputFields: [
-				{
-					label: 'Email address',
-					type: 'Hoshi',
-					onChangeText: (input) => { this.props.actions.updateLocalUserObject({ email: input }); }
-				}, {
-					label: 'Password',
-					type: 'Hoshi',
-					onChangeText: (input) => { this.props.actions.updateLocalUserObject({ password: input }); },
-					secureTextEntry: true
-				}
-			]
-		});
-	}
+class Login extends React.PureComponent<LoginProps> {
+	inputFields = [
+		{
+			label: 'Email address *',
+			type: 'Hoshi',
+			onChangeText: (input) => { this.props.actions.updateLocalUserObject({ email: input }); }
+		}, {
+			label: 'Password *',
+			type: 'Hoshi',
+			onChangeText: (input) => { this.props.actions.updateLocalUserObject({ password: input }); },
+			secureTextEntry: true
+		}
+	];
 
 	_onLogIn = async () => {
 		const { email, password } = this.props.userObject;
@@ -72,7 +57,7 @@ class Login extends React.Component<LoginProps, LoginState> {
 			<View>
 				<View style={authscreens.inputGroup}>
 					{
-						this.state.inputFields.map( inputElement => AppInput.build(inputElement))
+						this.inputFields.map( inputElement => AppInput.build(inputElement))
 					}
 				</View>
 				<AppButton title='Sign in' style={authscreens.button} onPress={this._onLogIn} />

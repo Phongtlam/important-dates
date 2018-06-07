@@ -41,7 +41,7 @@ const AppCircleButton = ({ iconName, color, onPress, fill, ...props }: AppCircle
 			onPress={() => {
 				if (onPress) onPress();
 			}}
-			style={[styles.container, props.style ? props.style : {}]}>
+			style={[styles.container, props.style]}>
 			<View style={styles.wrapper}>
 				<View style={[
 					styles.circle,
