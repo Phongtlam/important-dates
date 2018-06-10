@@ -1,13 +1,18 @@
 import { database } from './firebase';
-import { UserObject } from '../../interfaces';
+import shortid from 'shortid';
+import { UserObject, DateObject } from '../../interfaces';
 
-export const createNewUser = async ({ uid, username, email }: UserObject) => {
-	try {
-		return await database.ref('users/' + uid).set({
-			username,
-			email
-		});
-	} catch (error) {
-		return { error: error.toString() };
-	}
+export const createNewUser = ({ uid, username, email }: UserObject) => {
+	return database.ref('users/' + uid).set({
+		username,
+		email
+	});
+};
+
+export const addNewDate = (uid, { type, date, description, picture }: DateObject) => {
+	return database.ref(`users/${uid}/dates/${type}/${shortid.generate()}`).set({
+		date,
+		description,
+		picture
+	});
 };

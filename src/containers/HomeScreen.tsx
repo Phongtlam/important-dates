@@ -41,23 +41,23 @@ class HomeScreen extends React.Component<HomeScreenProps, HomeScreenState> {
 				{
 					image: Images.anniversary,
 					onPress: () => { this.props.actions.toggleCard('anniversaries'); },
-					usage: 'anniversaries'
+					key: 'anniversaries'
 				},
 				{
 					image: Images.birthdays,
 					onPress: () => { this.props.actions.toggleCard('birthdays'); },
-					usage: 'birthdays'
+					key: 'birthdays'
 				},
 				{
 					image: Images.paycheck,
 					onPress: () => { this.props.actions.toggleCard('paydays'); },
-					usage: 'paydays'
+					key: 'paydays'
 				},
 				{
 					icon: { type: 'FontAwesome', name: 'plus' },
 					onPress: () => { console.log('plus'); },
 					style: styles.plusIcon,
-					usage: 'add new important dates'
+					key: 'add new important dates'
 				},
 			]
 		};
@@ -71,7 +71,7 @@ class HomeScreen extends React.Component<HomeScreenProps, HomeScreenState> {
 					{
 						this.state.buttonsGroup.map( button =>
 							<AppButtonBox
-								key={button.usage}
+								key={button.key}
 								icon={button.icon}
 								image={button.image}
 								onPress={button.onPress}

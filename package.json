@@ -51,6 +51,7 @@
     "@types/lodash.debounce": "^4.0.3",
     "@types/react-navigation": "^1.5.11",
     "@types/react-redux": "^6.0.0",
+    "@types/shortid": "^0.0.29",
     "expo": "^27.0.1",
     "firebase": "^5.0.3",
     "lodash.debounce": "^4.0.8",
@@ -64,6 +65,7 @@
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
     "redux-thunk": "^2.2.0",
+    "shortid": "^2.2.8",
     "tslint": "^5.10.0"
   }
 }

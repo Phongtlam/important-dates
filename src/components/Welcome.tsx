@@ -52,34 +52,30 @@ class Welcome extends React.Component<WelcomeProps, WelcomeState> {
 			isAutoLogin: true
 		};
 	}
-	async componentDidMount() {
+
+	componentDidMount() {
 		if (!this.state.isAutoLogin) {
 			return;
 		}
-		try {
-			auth.onAuthStateChanged( user => {
-				if (user) {
-					this.props.actions.toggleLoading();
-					const { displayName, email, uid } = user;
-					const payLoad: any = {
-						email,
-						uid
-					};
-					if (displayName) {
-						payLoad.displayName = displayName;
-					}
-					this.props.actions.updateLocalUserObject(payLoad);
-					this.props.navigation.navigate('AppNavigation');
-					this.props.actions.toggleLoading(true);
-				} else {
-					this.setState({ isAutoLogin: false });
-				}
-			});
-		} catch (error) {
-			this.props.actions.toggleLoading(true);
-			this.props.actions.toggleAppModal(true, 'Error', helpers.errorFormat(error.toString()));
-		}
+		// autologin
+		auth.onAuthStateChanged( user => {
+			if (user) {
+				this.props.actions.toggleLoading();
+				const { displayName, email, uid } = user;
+				const payLoad: any = {
+					email,
+					uid,
+					displayName: displayName ? displayName : ''
+				};
+				this.props.actions.updateLocalUserObject(payLoad);
+				this.props.navigation.navigate('AppNavigation');
+				this.props.actions.toggleLoading(true);
+			} else {
+				this.setState({ isAutoLogin: false });
+			}
+		});
 	}
+
 	render() {
 		return (
 			<View style={authscreens.container}>

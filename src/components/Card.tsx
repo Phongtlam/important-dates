@@ -9,8 +9,10 @@ import { FontAwesome, Ionicons } from '@expo/vector-icons/';
 import { ToggleCard } from '../actions/card';
 import { ToggleAppModal } from '../actions/modal';
 import { AppText, AppButtonBox } from '../lib/components';
+import { Database } from '../lib/firebase';
 import Fonts from '../styles/font';
 import moment from 'moment';
+import { UserObject } from '../interfaces';
 
 const { width, height } = Dimensions.get('window');
 
@@ -35,7 +37,7 @@ const styles = StyleSheet.create({
 		display: 'flex',
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		height: 70,
+		height: 50,
 		alignItems: 'center',
 	},
 	dateText: {
@@ -46,19 +48,24 @@ const styles = StyleSheet.create({
 	cameraBox: {
 		borderWidth: 3,
 		aspectRatio: 1,
-		width: 160,
+		width: 130,
 		alignItems: 'center',
 		alignSelf: 'center',
 		borderRadius: 10,
-		marginTop: 20,
-		marginBottom: 30
+		marginTop: 10,
+		marginBottom: 20
 	},
 	dateDescription: {
 		color: Colors.grey,
-		paddingRight: 15,
+		paddingRight: 10,
 		fontFamily: Fonts.type.base,
 		fontSize: Fonts.size.regular,
-		paddingLeft: 10
+		paddingLeft: 10,
+	},
+	saveButton: {
+		bottom: 10,
+		right: 20,
+		position: 'absolute'
 	}
 });
 
@@ -71,6 +78,7 @@ interface CardProps {
 		cardType: string;
 		isOpen: boolean;
 	};
+	userObject: UserObject;
 }
 
 interface CardState {
@@ -79,24 +87,31 @@ interface CardState {
 	dateSelected: string;
 	canEditTitle: boolean;
 	canEditDescription: boolean;
+	description: string;
+	picture: any;
 }
 
 const headerColor = {
-	anniversaries: Colors.primaryRed,
+	anniversaries: Colors.primaryYellow,
 	birthdays: Colors.primary,
 	paydays: Colors.jade
 };
 
 class Card extends React.Component<CardProps, CardState> {
 	descriptionTextInput;
+	defaultState = {
+		categories: [ 'anniversaries', 'birthdays', 'paydays'],
+		categorySelected: 'anniversaries',
+		dateSelected: moment().format('MMM d, YYYY'),
+		canEditTitle: false,
+		canEditDescription: false,
+		description: '',
+		picture: null
+	};
 	constructor(props: CardProps) {
 		super(props);
 		this.state = {
-			categories: [ 'anniversaries', 'birthdays', 'paydays'],
-			categorySelected: 'anniversaries',
-			dateSelected: moment().format('MMM d, YYYY'),
-			canEditTitle: false,
-			canEditDescription: false
+			...this.defaultState
 		};
 	}
 
@@ -106,8 +121,24 @@ class Card extends React.Component<CardProps, CardState> {
 		}
 	}
 
+	onSaveToDb = () => {
+		Database.addNewDate(this.props.userObject.uid, {
+			type: this.state.categorySelected,
+			date: this.state.dateSelected,
+			description: this.state.description,
+			picture: this.state.picture
+		});
+		this.closeCard();
+	}
+
+	closeCard = () => {
+		this.props.actions.toggleCard(false);
+		this.setState({
+			...this.defaultState
+		});
+	}
+
 	render() {
-		const closeCard = () => { this.props.actions.toggleCard(false); };
 		const colorMatched = headerColor[this.state.categorySelected];
 		return (
 			<Modal
@@ -133,10 +164,10 @@ class Card extends React.Component<CardProps, CardState> {
 							<TouchableOpacity
 								style={styles.closeButton}
 								onPress={() => {
-									this.props.actions.toggleAppModal(true, 'Warning', 'Closing this will erase all data', true, closeCard);
+									this.props.actions.toggleAppModal(true, 'Warning', 'Closing this will erase all data', true, this.closeCard);
 								}}
 							>
-								<FontAwesome name='times' size={40} color={colorMatched} />
+								<FontAwesome name='times' size={30} color={Colors.grey} />
 							</TouchableOpacity>
 						</View>
 						<Picker
@@ -167,7 +198,7 @@ class Card extends React.Component<CardProps, CardState> {
 						/>
 
 						<View style={[styles.dateGroup, { width: '90%' }]}>
-						<AppText style={{ color: colorMatched, paddingRight: 15 }}>Description:</AppText>
+							<AppText style={{ color: colorMatched, paddingRight: 15 }}>Description:</AppText>
 							<TouchableOpacity
 								onPress={ () => {
 									this.setState({ canEditDescription: !this.state.canEditDescription }, () => {
@@ -185,9 +216,20 @@ class Card extends React.Component<CardProps, CardState> {
 							underlineColorAndroid='transparent'
 							multiline={true}
 							ref={(input) => { this.descriptionTextInput = input; }}
+							onChangeText={(text) => {
+								this.setState({
+									description: String(text)
+								});
+							}}
+							maxLength={150}
+						/>
+						<TouchableOpacity
+							disabled={this.state.description === ''}
+							style={styles.saveButton}
+							onPress={this.onSaveToDb}
 						>
-							Date Description
-						</TextInput>
+							<FontAwesome name='save' size={40} color={this.state.description === '' ? Colors.grey : Colors.primaryRed} />
+						</TouchableOpacity>
 					</View>
 				</View>
 			</Modal>

@@ -83,17 +83,13 @@ class Signup extends React.Component<LoginProps, LoginState> {
 			if (userObject.username !== '') {
 				try {
 					await Auth.updateUserProfile(userObject.username);
-					try {
-						await Database.createNewUser({
+						Database.createNewUser({
 							uid: responseSignup.user.uid,
 							username: userObject.username,
 							email: userObject.email,
 							password: ''
 						});
 						navigation.navigate('AppNavigation');
-					} catch (error) {
-						this.props.actions.toggleAppModal(true, 'Error', helpers.errorFormat(error.toString()));
-					}
 				} catch (error) {
 					this.props.actions.toggleAppModal(true, 'Error', helpers.errorFormat(error.toString()));
 				}
